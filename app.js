@@ -56,6 +56,16 @@ app.use(cookieParser());
 
 
 // app.use(express.static(path.join(__dirname, 'public')));
+if(process.env.NODE_ENV === 'production'){    
+    app.use(express.static('client/build'))  // set static folder 
+    //returning frontend for any route other than api 
+    app.get('*',(req,res)=>{     
+        res.sendFile (path.resolve(__dirname,'client','build',         
+                      'index.html' ));    
+    });
+}
+
+
 
 app.post('/login',Login.login);
 
@@ -67,15 +77,6 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-
-if(process.env.NODE_ENV === 'production'){    
-    app.use(express.static('client/build'))  // set static folder 
-    //returning frontend for any route other than api 
-    app.get('*',(req,res)=>{     
-        res.sendFile (path.resolve(__dirname,'client','build',         
-                      'index.html' ));    
-    });
-}
 
 
 
