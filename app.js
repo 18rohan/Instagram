@@ -55,17 +55,15 @@ app.use(cookieParser());
 //   })
 
 
-// app.use(express.static(path.join(__dirname, 'public')));
-if(process.env.NODE_ENV === 'production'){    
-    app.use(express.static('client/build'))  // set static folder 
-    //returning frontend for any route other than api 
-    app.get('*',(req,res)=>{
-      const index = path.join(__dirname, 'client/build', 'index.html');
-      res.sendFile(index);
-    });
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static('client/build'));
+
+  app.get('*', (request, response) => {
+    response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
 }
-
-
 
 app.post('/login',Login.login);
 
